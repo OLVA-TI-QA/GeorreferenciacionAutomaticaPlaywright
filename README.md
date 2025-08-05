@@ -96,6 +96,7 @@ automation-playwright-pom/
 │   └── testData/
 │       └── importacionData.json    # Test data files
 ├── tests/
+│   ├── api/
 │   ├── e2e/
 │   │   └── web/
 │   │       └── loginTest.spec.ts   # Test specifications
