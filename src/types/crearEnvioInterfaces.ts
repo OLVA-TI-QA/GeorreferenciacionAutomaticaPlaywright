@@ -1,0 +1,63 @@
+export interface CrearEnvioBody {
+  parentOpti: null
+  codigoOptitrack: number
+  idRecojo: null
+  idSede: number
+  idOficina: number
+  direccionEntrega: string
+  decJurada: number
+  decJuradaMonto: number
+  cargoAjuntoCant: number
+  idPersJurArea: string
+  consignado: string
+  consignadoTelf: string
+  consignadoDni: string
+  codExterno: string
+  idUbigeo: number
+  codPostal: string
+  createUser: number
+  idTipoVia: number
+  idTipoZona: number
+  nombreVia: string
+  nombreZona: string
+  numero: string
+  manzana: string
+  lote: string
+  latitud: number
+  longitud: number
+  poligono: null
+  idServicio: number
+  codOperador: null
+  tipoGestion: null
+  envioArticulo: EnvioArticulo
+  flgOficina: boolean
+  idOfiDest: null
+  montoBase: number
+  montoExceso: number
+  montoSeguro: number
+  montoIgv: number
+  precioVenta: number
+  montoEmbalaje: number
+  montoOtrosCostos: number
+  montoTransporte: number
+  entregaEnOficina: string
+  numDocSeller: string
+  nombreSeller: string
+  codigoAlmacen: string
+  codUbigeo: string
+  direccionSeller: string
+  referenciaSeller: string
+  contacto: string
+  telefono: string
+  observacion: string
+  nroPiezas: number
+}
+
+export interface EnvioArticulo {
+  pesoKgs: number
+  ancho: number
+  largo: number
+  alto: number
+  idContenedorArticulo: number
+  idArticulo: number
+}
