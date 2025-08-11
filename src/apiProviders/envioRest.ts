@@ -18,14 +18,12 @@ export class EnvioRest {
   }
 
   public async postLogin(usuario: string, clave: string) {
-    const loginResponse = await this.baseUrl!.get('/usuario/login', {
+    return await this.baseUrl!.get('/usuario/login', {
       data: {
         usuario,
         clave
       }
     })
-
-    return loginResponse
   }
 
   public async postCrearEnvio(

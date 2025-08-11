@@ -1,5 +1,6 @@
 import path from 'path'
 import { config } from 'dotenv'
+import { parseBoolean, parseNumber } from '@/utils/helpers'
 
 // Load environment variables from .env file
 config({ path: path.resolve(process.cwd(), '.env') })
@@ -66,8 +67,8 @@ export interface EnvironmentConfig {
 
   // API configuration
   apiBaseUrlEnvioRestDev: string
-  apiBaseUrlImportacionProd: string
-  apiBaseUrlImportacionv4: string
+  apiBaseUrlGeoDev: string
+  apiBaseUrlGeoProd: string
 
   //tokens
   geoXApiKey: string
@@ -126,16 +127,7 @@ export const environment: EnvironmentConfig = {
   testSuite: process.env.TEST_SUITE || 'smoke',
 
   apiBaseUrlEnvioRestDev: process.env.API_BASE_URL_ENVIO_REST_DEV || '', // is obtained from the .env file
-  apiBaseUrlImportacionProd: process.env.API_BASE_URL_IMPORTACION_PROD || '',
-  apiBaseUrlImportacionv4: process.env.API_BASE_URL_IMPORTACIONV4 || '',
+  apiBaseUrlGeoDev: process.env.API_BASE_URL_GEO_DEV || '',
+  apiBaseUrlGeoProd: process.env.API_BASE_URL_GEO_PROD || '',
   geoXApiKey: process.env.GEO_X_API_KEY || ''
-}
-
-function parseNumber(value: string | undefined, defaultValue: number): number {
-  const parsed = Number(value)
-  return isNaN(parsed) ? defaultValue : parsed
-}
-
-function parseBoolean(value: string | undefined, defaultValue: boolean): boolean {
-  return value === 'true' || value === '1' || value === 'on' ? true : value === 'false' || value === '0' || value === 'off' ? false : defaultValue
 }

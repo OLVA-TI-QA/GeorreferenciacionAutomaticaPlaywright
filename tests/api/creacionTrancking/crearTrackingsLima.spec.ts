@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test'
 import { EnvioRest } from '@/apiProviders/envioRest'
 import crearEnvioBodyJson from '@/testData/archivosJson/crearEnvioBody.json'
-import * as XLSX from 'xlsx'
 import { TipoCiudad, typeCiudad } from '@/config/ciudades'
+import { leerDatosDesdeExcel } from '@/utils/helpers'
+import { validarDatosExcel } from '@/utils/validadores'
 
 let envioRest: EnvioRest
 
@@ -15,15 +16,8 @@ const idSede = typeCiudad[ciudadActual].idSede
 const idOficina = typeCiudad[ciudadActual].idOficina
 
 // Ruta y nombre de la hoja de Excel
-const excelPath = './testData/direcciones.xlsx'
-const sheetName = 'Hoja1'
-
-// Función para leer Excel
-function leerDatosDesdeExcel(path: string, sheet: string) {
-  const workbook = XLSX.readFile(path)
-  const hoja = workbook.Sheets[sheet]
-  return XLSX.utils.sheet_to_json(hoja)
-}
+const excelPath = './src/testData/archivosExcel/DireccionesTrackingUbigeosTodosLosCasos.xlsx'
+const sheetName = 'DireccionesUbigeoPrimero'
 
 // 🧪 Setup antes de cada test
 test.beforeEach(async () => {
@@ -44,6 +38,8 @@ test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async
 
   // Paso 2: Leer Excel
   const datos = leerDatosDesdeExcel(excelPath, sheetName)
+  // Validar que el archivo de datos existe y tiene datos
+  validarDatosExcel(datos, sheetName)
 
   for (let i = 0; i < datos.length; i++) {
     const fila: any = datos[i]
