@@ -45,7 +45,11 @@ test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async
     const fila: any = datos[i]
 
     const direccion = fila['DIRECCIONES']
-    const idUbigeo = parseInt(fila['IDUBIGEO']) || 0
+
+    const codUbigeo = fila['IDUBIGEO'].toString().padStart(6, '0')
+    expect(codUbigeo.length).toBe(6)
+    const idUbigeo = parseInt(codUbigeo) || 0
+
     const codigoOptitrack = baseCodigoOptitrack + i - 1
 
     // Puedes ajustar los demás parámetros si quieres que también vengan del Excel
@@ -92,7 +96,10 @@ test('Crear trackings en la sede Lima en una sola petición (batch)', async () =
     body.idOficina = idOficina
     body.direccionEntrega = fila['DIRECCIONES']
     body.consignado = 'Pruebas Alem Origen Lima'
-    body.idUbigeo = parseInt(fila['IDUBIGEO']) || 0
+
+    const codUbigeo = fila['IDUBIGEO'].toString().padStart(6, '0')
+    expect(codUbigeo.length).toBe(6)
+    body.idUbigeo = parseInt(codUbigeo) || 0
 
     return body
   })
