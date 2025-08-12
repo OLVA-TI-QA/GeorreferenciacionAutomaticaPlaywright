@@ -3,7 +3,10 @@ export interface ExcelValidacion {
   direccionEnviada?: string
   direccionObtenida?: string
   ubigeo?: string
+  poligonoEsperado?: string
   poligonoObtenido?: string
+  coincidePoligono?: boolean
+  isZonaPeligrosa?: string
   tracking?: string
   servicioCodigo?: number
   nombreCliente?: string
