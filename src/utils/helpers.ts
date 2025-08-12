@@ -1,6 +1,7 @@
 import * as XLSX from 'xlsx'
 import * as fs from 'fs'
 import * as path from 'path'
+import { ExcelValidacion } from '@/types/excelInterfaces'
 
 export function parseNumber(value: string | undefined, defaultValue: number): number {
   const parsed = Number(value)
@@ -32,7 +33,7 @@ function getTimestamp(): string {
   return `${yyyy}${MM}${dd}_${hh}${mm}${ss}`
 }
 
-export function exportarResultadosAExcel(data: any[], nombreBase: string) {
+export function exportarResultadosValidarAddressIdAExcel(data: ExcelValidacion[], nombreBase: string) {
   // 1. Crear libro y hoja
   const libro = XLSX.utils.book_new()
   const hoja = XLSX.utils.aoa_to_sheet([]) // hoja vacía para llenarla a mano
@@ -42,7 +43,7 @@ export function exportarResultadosAExcel(data: any[], nombreBase: string) {
   XLSX.utils.sheet_add_aoa(hoja, [headers], { origin: 'A1' })
 
   // 3. Filas de datos (orden manual)
-  const rows = data.map((r: any) => [
+  const rows = data.map((r: ExcelValidacion) => [
     r.nro,
     r.direccionEnviada,
     r.direccionObtenida,
@@ -60,6 +61,59 @@ export function exportarResultadosAExcel(data: any[], nombreBase: string) {
 
   // 5. Adjuntar hoja al libro
   XLSX.utils.book_append_sheet(libro, hoja, 'Resultados Validación')
+
+  // 6. Guardar archivo
+  if (!fs.existsSync('resultados-exportados')) fs.mkdirSync('resultados-exportados')
+  const timestamp = getTimestamp()
+  const nombreArchivo = `${nombreBase}_${timestamp}.xlsx`
+  const ruta = path.join('resultados-exportados', nombreArchivo)
+  XLSX.writeFile(libro, ruta)
+  console.log(`✅ Resultados exportados a: ${ruta}`)
+}
+
+export function exportarResultadosValidarOficinasAExcel(data: ExcelValidacion[], nombreBase: string) {
+  // 1. Crear libro y hoja
+  const libro = XLSX.utils.book_new()
+  const hoja = XLSX.utils.aoa_to_sheet([]) // hoja vacía para llenarla a mano
+
+  // 2. Encabezados (orden manual)
+  const headers = [
+    'NRO',
+    'LONGITUD ENVIADA',
+    'LONGITUD OBTENIDA',
+    'LATITUD ENVIADA',
+    'LATITUD OBTENIDA',
+    'DIRECCIONES',
+    'CODUBIGEO ENVIADO',
+    'CODUBIGEO OBTENIDO',
+    'ES OFICINA?',
+    'ID ADDRESS',
+    'NOMBRE OFICINA'
+  ]
+  XLSX.utils.sheet_add_aoa(hoja, [headers], { origin: 'A1' })
+
+  // 3. Filas de datos (orden manual)
+  const rows = data.map((r: ExcelValidacion) => [
+    r.nro,
+    r.longitudeEnviada,
+    r.longitudeObtenida,
+    r.latitudeEnviada,
+    r.latitudeObtenida,
+    r.direccionEnviada,
+    r.codUbigeoEnviado,
+    r.codUbigeoObtenido,
+    r.isOficina,
+    r.idAddress,
+    r.nombreOficina
+  ])
+  XLSX.utils.sheet_add_aoa(hoja, rows, { origin: 'A2' })
+
+  // 4. Ajustar anchos
+  const colWidths = headers.map((h) => ({ wch: Math.max(h.length, 20) }))
+  hoja['!cols'] = colWidths
+
+  // 5. Adjuntar hoja al libro
+  XLSX.utils.book_append_sheet(libro, hoja, 'Resultados Validación Oficinas')
 
   // 6. Guardar archivo
   if (!fs.existsSync('resultados-exportados')) fs.mkdirSync('resultados-exportados')

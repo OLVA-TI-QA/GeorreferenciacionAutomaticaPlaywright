@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test'
 import { Geo } from '../../../src/apiProviders/geo'
-import { exportarResultadosAExcel, leerDatosDesdeExcel } from '@/utils/helpers'
+import { exportarResultadosValidarAddressIdAExcel, leerDatosDesdeExcel } from '@/utils/helpers'
 import { validarDatosExcel } from '@/utils/validadores'
-import { ExcelValidacionAddressId } from '@/types/excelInterfaces'
+import { ExcelValidacion } from '@/types/excelInterfaces'
 
 let geo: Geo
 const excelPath = './src/testData/archivosExcel/DireccionesNoGeoreferenciadasAddressId.xlsx'
 const sheetName = 'Hoja 1'
-const resultadosValidacion: ExcelValidacionAddressId[] = []
+const resultadosValidacion: ExcelValidacion[] = []
 
 test.beforeEach(async () => {
   const currentGeo = new Geo()
@@ -95,8 +95,9 @@ test('Validar direcciónes no georreferenciadas (address_id = 0)', async () => {
   const exitosos = totalRegistros - direccionesNoEncontradas
 
   console.log(`📊 Resumen: ${totalRegistros} procesados, ${exitosos} encontrados, ${direccionesNoEncontradas} no encontradas`)
+  console.log(`Hay ${exitosos} de ${totalRegistros} direcciones con address_id = 0 que fueron georreferenciadas correctamente.`)
   // ✅ Exportar al final
-  exportarResultadosAExcel(resultadosValidacion, 'resultados_validacion_address_id')
+  exportarResultadosValidarAddressIdAExcel(resultadosValidacion, 'resultados_validacion_address_id')
 
   expect(direccionesNoEncontradas).toBe(totalRegistros)
 })
