@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { Geo } from '../../../src/apiProviders/geo'
-import { exportarResultadosValidarAddressIdAExcel, leerDatosDesdeExcel } from '@/utils/helpers'
+import { exportarResultadosGenerico, leerDatosDesdeExcel } from '@/utils/helpers'
 import { validarDatosExcel } from '@/utils/validadores'
 import { ExcelValidacion } from '@/types/excelInterfaces'
 
@@ -97,7 +97,21 @@ test('Validar direcciónes no georreferenciadas (address_id = 0)', async () => {
   console.log(`📊 Resumen: ${totalRegistros} procesados, ${exitosos} encontrados, ${direccionesNoEncontradas} no encontradas`)
   console.log(`Hay ${exitosos} de ${totalRegistros} direcciones con address_id = 0 que fueron georreferenciadas correctamente.`)
   // ✅ Exportar al final
-  exportarResultadosValidarAddressIdAExcel(resultadosValidacion, 'resultados_validacion_address_id')
+  exportarResultadosGenerico<ExcelValidacion>({
+    data: resultadosValidacion,
+    nombreBase: 'resultados_validacion_address_id',
+    headers: ['NRO', 'DIRECCIÓN ENVIADA', 'DIRECCIÓN OBTENIDA', 'UBIGEO', 'POLÍGONO OBTENIDO', 'TRACKING', 'SERVICIO CÓDIGO', 'NOMBRE CLIENTE'],
+    extraerCampos: [
+      (r) => r.nro,
+      (r) => r.direccionEnviada,
+      (r) => r.direccionObtenida,
+      (r) => r.ubigeo,
+      (r) => r.poligonoObtenido,
+      (r) => r.tracking,
+      (r) => r.servicioCodigo,
+      (r) => r.nombreCliente
+    ]
+  })
 
   expect(direccionesNoEncontradas).toBe(totalRegistros)
 })

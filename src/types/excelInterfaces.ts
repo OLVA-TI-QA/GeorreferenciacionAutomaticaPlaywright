@@ -17,3 +17,13 @@ export interface ExcelValidacion {
   idAddress?: string
   nombreOficina?: string
 }
+
+export interface ExportConfig<T> {
+  data: T[]
+  nombreBase: string
+  headers: string[]
+  nombreHoja?: string
+  extraerCampos: CampoExtractor<T>[]
+}
+
+export type CampoExtractor<T> = (item: T) => string | number | boolean | undefined

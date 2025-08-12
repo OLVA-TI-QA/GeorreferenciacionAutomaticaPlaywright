@@ -2,9 +2,12 @@
 # Playwright
 node_modules/
 /test-results/
-/resultados-exportados/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 
 /generated/prisma
+
+/resultados-exportados/
+
+.DS_Store
