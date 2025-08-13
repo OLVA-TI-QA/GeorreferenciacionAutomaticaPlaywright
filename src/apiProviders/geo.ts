@@ -37,4 +37,14 @@ export class Geo {
 
     return geoReverseResponse
   }
+
+  public async getGeoCodeId(addressId: string) {
+    const geoCodeIdResponse = await this.baseUrl!.get('/api/v2/geo/code', {
+      params: {
+        addressId
+      }
+    })
+
+    return geoCodeIdResponse
+  }
 }
