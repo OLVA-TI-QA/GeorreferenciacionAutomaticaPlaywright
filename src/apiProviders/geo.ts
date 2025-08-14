@@ -1,5 +1,5 @@
 import { request, APIRequestContext } from '@playwright/test'
-import { environment } from '@config/environment'
+import { environment } from '../config/environment'
 
 export class Geo {
   private baseUrl?: APIRequestContext

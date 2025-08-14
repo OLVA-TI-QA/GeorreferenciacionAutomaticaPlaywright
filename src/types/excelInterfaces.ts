@@ -30,3 +30,12 @@ export interface ExportConfig<T> {
 }
 
 export type CampoExtractor<T> = (item: T) => string | number | boolean | undefined
+
+// Interfaz para el Excel, adaptada a tu función exportarResultadosGenerico
+export interface ExcelValidacionExportTrackings {
+  tracking: number
+  address_id: number
+  address: string
+  address_normalized: string
+  errores: string
+}

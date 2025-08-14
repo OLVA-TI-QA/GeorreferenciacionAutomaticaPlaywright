@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test'
 import { getTrakingsByDate, getTrakingsByDateRawSQL } from '../../../src/database/testDataHelpers'
 import { database } from '../../../src/database/connection'
+import { ExcelValidacionExportTrackings } from '@/types/excelInterfaces'
+import { validarTrackings } from '@/utils/validadores'
+import { exportarResultadosGenerico } from '@/utils/helpers'
 
 test.describe('Pruebas con base de datos', () => {
   // Configure no retries for this test suite
@@ -15,6 +18,8 @@ test.describe('Pruebas con base de datos', () => {
   })
 
   test('Consulta de trackings utilizando Prisma ORM', async () => {
+    // 1. Obtener los datos de la base de datos usando tu función
+
     console.log('\n=== Testing Prisma ORM query ===')
     // Create a proper ISO-8601 datetime string for the database query
     const fechaConsulta = new Date('2025-06-23T00:00:00.000Z')
@@ -35,6 +40,22 @@ test.describe('Pruebas con base de datos', () => {
       expect(firstTracking).toHaveProperty('address_id')
       expect(firstTracking).toHaveProperty('address')
       expect(firstTracking).toHaveProperty('address_normalized')
+
+      // 2. Realizar la validación usando la nueva función migrada
+      const resultadosValidacion: ExcelValidacionExportTrackings[] = validarTrackings(trackings)
+
+      console.log(`✅ Se validaron ${resultadosValidacion.length} trackings.`)
+
+      // 3. Exportar los resultados a Excel usando tu función genérica
+      exportarResultadosGenerico<ExcelValidacionExportTrackings>({
+        data: resultadosValidacion,
+        nombreBase: 'resultados_validacion_normalizacion_direcciones',
+        headers: ['tracking', 'address_id', 'address', 'address_normalized', 'Errores'],
+        extraerCampos: [(r) => r.tracking, (r) => r.address_id, (r) => r.address, (r) => r.address_normalized, (r) => r.errores]
+      })
+
+      // 4. (Opcional) Puedes agregar un 'expect' si lo necesitas, por ejemplo, que no haya errores
+      expect(resultadosValidacion.some((r) => r.errores !== 'Correcta')).toBeFalsy()
     }
   })
 
