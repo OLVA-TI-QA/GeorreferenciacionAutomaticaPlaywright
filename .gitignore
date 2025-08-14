@@ -11,3 +11,4 @@ node_modules/
 /resultados-exportados/
 
 .DS_Store
+dist/

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { Geo } from '../../../src/apiProviders/geo'
-import { exportarResultadosGenerico, leerDatosDesdeExcel } from '@/utils/helpers'
+import { exportarResultadosGenerico, leerDatosDesdeExcel } from '../../../src/utils/helpers'
 import { validarDatosExcel } from '@/utils/validadores'
 import { ExcelValidacion } from '@/types/excelInterfaces'
 

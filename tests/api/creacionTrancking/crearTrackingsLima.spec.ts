@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { EnvioRest } from '@/apiProviders/envioRest'
 import crearEnvioBodyJson from '@/testData/archivosJson/crearEnvioBody.json'
 import { TipoCiudad, typeCiudad } from '@/config/ciudades'
-import { leerDatosDesdeExcel } from '@/utils/helpers'
+import { leerDatosDesdeExcel } from '../../../src/utils/helpers'
 import { validarDatosExcel } from '@/utils/validadores'
 
 let envioRest: EnvioRest

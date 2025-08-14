@@ -1,6 +1,6 @@
 import path from 'path'
 import { config } from 'dotenv'
-import { parseBoolean, parseNumber } from '@/utils/helpers'
+import { parseBoolean, parseNumber } from '../utils/helpers'
 
 // Load environment variables from .env file
 config({ path: path.resolve(process.cwd(), '.env') })
@@ -74,6 +74,9 @@ export interface EnvironmentConfig {
   geoXApiKey: string
 }
 
+// ✅ Composición segura de DATABASE_URL
+const databaseUrl = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?schema=${process.env.DB_SCHEMA}`
+
 /**
  * Environment configuration object
  */
@@ -83,7 +86,7 @@ export const environment: EnvironmentConfig = {
   baseUrl: process.env.BASE_URL!, // is obtained from the .env file
 
   database: {
-    url: process.env.DATABASE_URL!,
+    url: databaseUrl, // es la composición segura de DB
     host: process.env.DB_HOST || 'localhost', // is obtained from the .env file
     port: parseNumber(process.env.DB_PORT, 5432),
     name: process.env.DB_NAME || 'qa_automation_db',
