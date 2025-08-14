@@ -6,10 +6,46 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model OlvaTrackings {
+  id                  Int      @id
+  id_envio            Int      @unique
+  address_id          Int
+  emision             Int
+  tracking            Int
+  address             String
+  ubigeo              String?
+  cliente             Int
+  orden_servicio      String
+  fecha_emision       DateTime
+  geocode             Boolean
+  contenedor          String
+  servicio_codigo     String
+  status              Int
+  nombre_cliente      String
+  documento_client    String
+  centro_costo        String
+  id_operador         Int
+  codigo_operador     String
+  id_sede             Int
+  nombre_sede         String
+  id_persona_jur_area Int
+  sector_direccion    String
+  tracking_tipo       String
+  created_at          Float
+  updated_at          Float
+  created_by          Int
+  updated_by          Int
+  start_geocode       Int
+  address_normalized  String
+  address_problems    Json
+  address_token       String
+
+  @@map("trackings")
 }
