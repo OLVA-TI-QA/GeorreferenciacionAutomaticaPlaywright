@@ -37,12 +37,12 @@ test('Validar direcciónes no georreferenciadas (address_id = 0)', async () => {
     const idAddress = fila['IDADDRESS'] ?? ''
 
     console.log(`✅ Procesando registro #${nro}: ${direccion}`)
-    const geoReverseResponse = await geo.getGeoCode(direccion, codUbigeo)
+    const geoCodeResponse = await geo.getGeoCode(direccion, codUbigeo)
 
-    expect([200, 204]).toContain(geoReverseResponse.status())
+    expect([200, 204]).toContain(geoCodeResponse.status())
     let bodyResponse = null
-    if (geoReverseResponse.status() === 200) {
-      bodyResponse = await geoReverseResponse.json()
+    if (geoCodeResponse.status() === 200) {
+      bodyResponse = await geoCodeResponse.json()
     }
 
     const isBodyEmpty = !bodyResponse || (typeof bodyResponse === 'object' && Object.keys(bodyResponse).length === 0)

@@ -17,7 +17,7 @@ export async function getTrakingsByDate(
     return await prisma.olvaTrackings.findMany({
       where: {
         fecha_emision: {
-          gt: trackingData.fecha_emision // Using 'gt' (greater than) instead of equality
+          gt: trackingData.fecha_emision // Usar 'gt' (greater than) en lugar de igual
         },
         emision: trackingData.emision
       },
@@ -37,20 +37,20 @@ export async function getTrakingsByDate(
 }
 
 /**
- * Execute the exact same SQL query you're using in DBeaver
+ * Ejecuta exactamente la misma consulta SQL que estás usando en DBeaver
  *
- * Prisma Raw Query Options:
+ * Opciones de consultas en crudo (Raw Query) de Prisma:
  *
- * 1. $queryRaw - For SELECT queries (returns array of objects)
- * 2. $executeRaw - For INSERT/UPDATE/DELETE (returns count)
- * 3. $queryRawUnsafe - When you need dynamic SQL (less safe)
- * 4. $executeRawUnsafe - For non-SELECT dynamic SQL
+ * 1. $queryRaw - Para consultas SELECT (devuelve un arreglo de objetos)
+ * 2. $executeRaw - Para INSERT/UPDATE/DELETE (devuelve un conteo)
+ * 3. $queryRawUnsafe - Cuando necesitas SQL dinámico (menos seguro)
+ * 4. $executeRawUnsafe - Para SQL dinámico que no sea SELECT
  */
 export async function getTrakingsByDateRawSQL() {
   try {
     console.log('🔍 Executing raw SQL query (same as DBeaver):')
 
-    // Option 1: Template literal (recommended - SQL injection safe)
+    // Template literal (recomendado - seguro contra inyecciones SQL)
     const result = await prisma.$queryRaw`
       SELECT t.tracking, t.address_id, t.address, t.address_normalized, t.address_problems
       FROM olva.trackings t
@@ -73,7 +73,7 @@ export async function getTrakingsByDateRawSQL() {
  */
 export async function getTrakingsByDateWithParams(fechaDesde: Date, emisionValue: number, limitValue: number) {
   try {
-    // Using parameters to prevent SQL injection
+    // User parameters para prevenir SQL injection
     const result = await prisma.$queryRaw`
       SELECT t.tracking, t.address_id, t.address, t.address_normalized, t.address_problems
       FROM olva.trackings t
