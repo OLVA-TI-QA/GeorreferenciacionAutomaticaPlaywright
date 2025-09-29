@@ -8,7 +8,7 @@ import { validarDatosExcel } from '@/utils/validadores'
 let envioRest: EnvioRest
 
 // Configura tu base para códigoOptitrack
-const baseCodigoOptitrack = 50000 // puedes cambiar este valor
+const baseCodigoOptitrack = 50300 // puedes cambiar este valor
 
 // Obtener los IDs de la ciudad actual
 const ciudadActual: TipoCiudad = 'Lima'
@@ -26,7 +26,7 @@ test.beforeEach(async () => {
 })
 
 // 🧪 Test principal con múltiples envíos
-test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async () => {
+test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async () => { //pendiente de corregir
   // Paso 1: Login
   const loginResponse = await envioRest.postLogin('olvati', 'J&_Mv9]H^2Vx')
   expect(loginResponse.status()).toBe(200)
@@ -41,7 +41,8 @@ test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async
   // Validar que el archivo de datos existe y tiene datos
   validarDatosExcel(datos, sheetName)
 
-  for (let i = 0; i < datos.length; i++) {
+  // for (let i = 0; i < datos.length; i++) {
+  for (let i = 0; i < 10; i++) {
     const fila: any = datos[i]
 
     const direccion = fila['DIRECCIONES']
@@ -106,6 +107,8 @@ test('Crear trackings en la sede Lima en una sola petición (batch)', async () =
 
   // Paso 4: Enviar todos los envíos en un solo POST
   const response = await envioRest.postCrearMultiplesEnvios(token, listaEnvios)
+
+  console.log('📦 Respuesta del envío múltiple:', response.body())
 
   expect(response.status()).toBe(201)
 

@@ -18,7 +18,7 @@ export class EnvioRest {
   }
 
   public async postLogin(usuario: string, clave: string) {
-    return await this.baseUrl!.get('/usuario/login', {
+    return await this.baseUrl!.post('/envioRest/webresources/usuario/login', {
       data: {
         usuario,
         clave
@@ -46,7 +46,7 @@ export class EnvioRest {
     body.consignado = consignado
     body.idUbigeo = idUbigeo
 
-    const getResponse = await this.baseUrl!.get('/envio/crear', {
+    const getResponse = await this.baseUrl!.post('/envioRest/webresources/envio/crear', {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -57,7 +57,7 @@ export class EnvioRest {
   }
 
   public async postCrearMultiplesEnvios(token: string, listaDeEnvios: CrearEnvioBody[]) {
-    return await this.baseUrl!.post('/envio/crear', {
+    return await this.baseUrl!.post('/envioRest/webresources/envio/crear', {
       data: listaDeEnvios,
       headers: {
         Authorization: `Bearer ${token}`
