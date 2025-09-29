@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx'
 import * as fs from 'fs'
 import * as path from 'path'
-import { ExcelValidacion, ExportConfig } from '../types/excelInterfaces'
+import { ExportConfig } from '../types/excelInterfaces'
 
 export function parseNumber(value: string | undefined, defaultValue: number): number {
   const parsed = Number(value)
