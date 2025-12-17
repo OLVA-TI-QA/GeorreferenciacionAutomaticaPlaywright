@@ -53,7 +53,7 @@ test('Validar direcciónes no georreferenciadas (address_id = 0) tolerando 200 o
     }
   }
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < datos.length; i++) {
     const fila: any = datos[i]
     const nro = fila['NRO'] ?? null
     const direccion = fila['DIRECCIONES'] ?? ''
