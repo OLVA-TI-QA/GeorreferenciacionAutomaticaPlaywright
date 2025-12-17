@@ -1,29 +1,36 @@
-import { request, APIRequestContext } from '@playwright/test'
-import { environment } from '@config/environment'
 import crearEnvioBodyJson from '@/testData/archivosJson/crearEnvioBody.json'
 import { CrearEnvioBody } from '@/types/crearEnvioInterfaces'
+import { environment } from '@config/environment'
+import { APIRequestContext, request } from '@playwright/test'
 
 export class EnvioRest {
   private baseUrl?: APIRequestContext
+  private fullBaseUrl: string
+
+  constructor() {
+    this.fullBaseUrl = environment.apiBaseUrlEnvioRestDev
+  }
 
   async init() {
     this.baseUrl = await request.newContext({
       extraHTTPHeaders: {
         'Content-Type': 'application/json'
-      },
-      baseURL: environment.apiBaseUrlEnvioRestDev
+      }
     })
 
     return this
   }
 
   public async postLogin(usuario: string, clave: string) {
-    return await this.baseUrl!.post('/envioRest/webresources/usuario/login', {
+    const loginUrl = `${this.fullBaseUrl}/usuario/login`
+    const loginResponse = await this.baseUrl!.post(loginUrl, {
       data: {
         usuario,
         clave
       }
     })
+
+    return loginResponse
   }
 
   public async postCrearEnvio(
@@ -36,7 +43,7 @@ export class EnvioRest {
     idUbigeo: number
   ) {
     // Clonar el JSON para evitar mutaciones globales
-    const body = { ...crearEnvioBodyJson }
+    const body = structuredClone(crearEnvioBodyJson)
 
     // Sobrescribir solo los campos necesarios
     body.codigoOptitrack = codigoOptitrack
@@ -46,7 +53,8 @@ export class EnvioRest {
     body.consignado = consignado
     body.idUbigeo = idUbigeo
 
-    const getResponse = await this.baseUrl!.post('/envioRest/webresources/envio/crear', {
+    const createUrl = `${this.fullBaseUrl}/envio/crear`
+    const getResponse = await this.baseUrl!.post(createUrl, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -57,7 +65,8 @@ export class EnvioRest {
   }
 
   public async postCrearMultiplesEnvios(token: string, listaDeEnvios: CrearEnvioBody[]) {
-    return await this.baseUrl!.post('/envioRest/webresources/envio/crear', {
+    const createUrl = `${this.fullBaseUrl}/envio/crear`
+    return await this.baseUrl!.post(createUrl, {
       data: listaDeEnvios,
       headers: {
         Authorization: `Bearer ${token}`

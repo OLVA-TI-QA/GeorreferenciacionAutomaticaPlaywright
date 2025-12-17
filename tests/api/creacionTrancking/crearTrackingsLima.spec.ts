@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test'
 import { EnvioRest } from '@/apiProviders/envioRest'
-import crearEnvioBodyJson from '@/testData/archivosJson/crearEnvioBody.json'
 import { TipoCiudad, typeCiudad } from '@/config/ciudades'
-import { leerDatosDesdeExcel } from '../../../src/utils/helpers'
+import crearEnvioBodyJson from '@/testData/archivosJson/crearEnvioBody.json'
 import { validarDatosExcel } from '@/utils/validadores'
+import { expect, test } from '@playwright/test'
+import { leerDatosDesdeExcel } from '../../../src/utils/helpers'
 
 let envioRest: EnvioRest
 
@@ -26,9 +26,11 @@ test.beforeEach(async () => {
 })
 
 // 🧪 Test principal con múltiples envíos
-test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async () => { //pendiente de corregir
+test('Crear trackings en la sede de Lima, 1 request por body (Iterativo)', async () => {
+  //pendiente de corregir
   // Paso 1: Login
   const loginResponse = await envioRest.postLogin('olvati', 'J&_Mv9]H^2Vx')
+  // console.log('Login response:', (await loginResponse.body()).toJSON())
   expect(loginResponse.status()).toBe(200)
 
   const authBody = await loginResponse.json()
